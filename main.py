@@ -15,22 +15,22 @@ player_x = 250
 
 
 base_y = 600
-base_x = 200
+base_x = 150
 
 base_y_1 = 150
-base_x_1 = 200
+base_x_1 = 150
 
 base_y_2 = 350
-base_x_2 = 200
+base_x_2 = 150
 
 
 base_width = 300
 base_height = 20
 
 ##define gravity value 
-gravity = 2
+gravity = 4
 zero = 0
-gravity_base = 1
+gravity_base = 3
 
 
 size = (screen_width, screen_height)
@@ -177,13 +177,13 @@ while True:
 
 
 
-    if base.rect.y==screen_height:
+    if base.rect.y+base_height==screen_height:
         base.rect.y =0
     
-    if base1.rect.y ==screen_height:
+    if base1.rect.y+base_height ==screen_height:
         base1.rect.y=0
 
-    if base2.rect.y ==screen_height:
+    if base2.rect.y+base_height ==screen_height:
         base2.rect.y = 0
 
     screen.blit(background_image, (0, background_y))
