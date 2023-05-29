@@ -105,7 +105,7 @@ while True:
     #--------
     # introduce player collision with base & gravits
     # collision base bottom
-    if player.rect.y+player_height>base.rect.y:
+    if player.rect.y+player_height==base.rect.y:
         player.rect.y-= 1
         print('collision_base')
         collision_base_2 = 1
