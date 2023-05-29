@@ -176,6 +176,9 @@ while True:
 
 
 
+    if base.rect.y==screen_height:
+        base.rect.y =0
+
     screen.blit(background_image, (0, background_y))
     screen.blit(background_image, (0, background_y - screen_height))
 
