@@ -10,7 +10,7 @@ screen_width = 636
 player_width = 50   
 player_height = 50
 
-player_y = 500
+player_y = 200
 player_x = 250
 
 
@@ -20,7 +20,7 @@ base_x = 150
 base_y_1 = 150
 base_x_1 = 150
 
-base_y_2 = 350
+base_y_2 = 300
 base_x_2 = 150
 
 
@@ -165,16 +165,19 @@ while True:
 
     ## introduce jump mechanics
     if keys[pygame.K_SPACE]:
-        # Scroll the background
-        background_y += 5
+       # if player.rect.y+player_height==base1.rect.y:
 
-        if background_y >= screen_height:
-            background_y = 0
+            # Scroll the background
+            print('jump')
+            background_y += 5
 
-    # Draw background
-       
-        player.rect.y -=8
-
+            if background_y >= screen_height:
+                background_y = 0
+            player.rect.y -=8
+    
+    if player.rect.y+player_height==base.rect.y:
+      
+        print('contact_base')
 
 
     if base.rect.y+base_height==screen_height:
