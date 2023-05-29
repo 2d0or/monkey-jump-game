@@ -5,7 +5,7 @@ import random
 #define fixed variables
 
 screen_height = 800
-screen_width = 800
+screen_width = 636
 
 player_width = 50   
 player_height = 50
@@ -28,8 +28,9 @@ base_width = 300
 base_height = 20
 
 ##define gravity value 
-gravity = 1
+gravity = 2
 zero = 0
+gravity_base = 1
 
 
 size = (screen_width, screen_height)
@@ -56,21 +57,24 @@ class Monkey(pygame.sprite.Sprite):
         self.rect.move_ip(0,int(gravity))
 
 class Base(pygame.sprite.Sprite):
-    def __init__(self,x,y,base_x, base_y):
+    def __init__(self,x,y,base_x, base_y, speed):
         super().__init__()
         self.image = pygame.Surface((base_width,base_height))
         self.image.fill('#ffe135')
         self.rect = self.image.get_rect()
         self.rect.x = base_x
         self.rect.y = base_y
+        self.speed = gravity_base
+    def update(self):
+        self.rect.move_ip(0,int(gravity_base))
 
    
         
 
 player = Monkey(player_x, player_y, gravity)
-base=Base(base_width,base_height,base_x,base_y)
-base1=Base(base_width,base_height,base_x_2,base_y_1)
-base2=Base(base_width,base_height, base_x_2, base_y_2)
+base = Base(base_height, base_width, base_x, base_y, gravity_base)
+base1=Base(base_width,base_height,base_x_2,base_y_1,gravity_base)
+base2=Base(base_width,base_height, base_x_2, base_y_2, gravity_base)
 
 
 all_sprites = pygame.sprite.Group()
