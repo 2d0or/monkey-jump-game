@@ -89,7 +89,6 @@ clock = pygame.time.Clock()
 background_image = pygame.image.load("sky.jpg")
 background_y = 0
 
-
 #game conditions 
 while True:
     for event in pygame.event.get():
@@ -99,7 +98,7 @@ while True:
     clock.tick(60)
 
 
-
+    #### falling off the map --> break
     if player.rect.y+player_height>screen_height:
         break
 
