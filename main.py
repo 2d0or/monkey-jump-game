@@ -5,7 +5,7 @@ import random
 #define fixed variables
 
 screen_height = 800
-screen_width = 800
+screen_width = 636
 
 player_width = 50   
 player_height = 50
