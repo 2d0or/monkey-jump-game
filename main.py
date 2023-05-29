@@ -17,10 +17,10 @@ player_x = 250
 base_y = 600
 base_x = 200
 
-base_y_1 = 200
+base_y_1 = 150
 base_x_1 = 200
 
-base_y_2 = 400
+base_y_2 = 350
 base_x_2 = 200
 
 
