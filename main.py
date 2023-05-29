@@ -151,6 +151,7 @@ while True:
         print('player_move_-x')
 
 
+
     if keys[pygame.K_d]:
         player.rect.x +=3
         print('player_move_x')   
