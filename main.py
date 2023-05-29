@@ -65,6 +65,7 @@ class Base(pygame.sprite.Sprite):
         self.rect.x = base_x
         self.rect.y = base_y
         self.speed = gravity_base
+
     def update(self):
         self.rect.move_ip(0,int(gravity_base))
 
@@ -180,7 +181,7 @@ while True:
         base.rect.y =0
     
     if base1.rect.y ==screen_height:
-        base.rect.y=0
+        base1.rect.y=0
 
     if base2.rect.y ==screen_height:
         base2.rect.y = 0
