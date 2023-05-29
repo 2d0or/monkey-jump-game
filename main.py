@@ -100,7 +100,8 @@ while True:
 
 
 
-    
+    if player.rect.y+player_height>screen_height:
+        break
 
     #--------
     # introduce player collision with base & gravits
@@ -178,6 +179,12 @@ while True:
 
     if base.rect.y==screen_height:
         base.rect.y =0
+    
+    if base1.rect.y ==screen_height:
+        base.rect.y=0
+
+    if base2.rect.y ==screen_height:
+        base2.rect.y = 0
 
     screen.blit(background_image, (0, background_y))
     screen.blit(background_image, (0, background_y - screen_height))
