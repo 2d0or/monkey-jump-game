@@ -105,7 +105,7 @@ def play():
         clock = pygame.time.Clock()
 
         #background
-        background_image = pygame.image.load("sky.jpg")
+        background_image = pygame.image.load("sky1.png")
         background_y = 0
 
         #game conditions 
