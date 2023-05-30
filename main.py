@@ -56,7 +56,7 @@ def play():
 
 
     #name of the window
-        pygame.display.set_caption('my monkey game')
+        pygame.display.set_caption('Monkey Game')
 
 
 
