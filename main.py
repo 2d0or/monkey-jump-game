@@ -11,6 +11,9 @@ BG = pygame.image.load("assets/Background.png")
 def get_font(size): # Returns Press-Start-2P in the desired size
     return pygame.font.Font("assets/font.ttf", size)
 
+
+
+
 def play():
     while True:
         #PLAY_MOUSE_POS = pygame.mouse.get_pos()
@@ -107,13 +110,15 @@ def play():
         #background
         background_image = pygame.image.load("sky1.png")
         background_y = 0
-
+        keys = pygame.key.get_pressed()
         #game conditions 
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+                
+                
             clock.tick(60)
 
 
@@ -123,6 +128,10 @@ def play():
             
             if player.rect.y<0:
                 print('sky')
+                main_menu()
+
+            if keys[pygame.K_ESCAPE]:
+                print('Space')
                 main_menu()
                 
 
@@ -261,6 +270,7 @@ def options():
 def main_menu():
     while True:
         SCREEN.blit(BG, (0, 0))
+        keys = pygame.key.get_pressed()
 
         MENU_MOUSE_POS = pygame.mouse.get_pos()
 
@@ -280,6 +290,8 @@ def main_menu():
             button.changeColor(MENU_MOUSE_POS)
             button.update(SCREEN)
         
+
+          
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -292,7 +304,15 @@ def main_menu():
                 if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
                     pygame.quit()
                     sys.exit()
-
+                print('mouse_button_down')
+            if keys[pygame.K_SPACE]:
+                print('Space')
+                play()
+            
+            if keys[pygame.K_ESCAPE]:
+                sys.exit()
         pygame.display.update()
 
+
 main_menu()
+
