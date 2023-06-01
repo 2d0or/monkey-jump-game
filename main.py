@@ -83,20 +83,28 @@ def play():
         class Monkey(pygame.sprite.Sprite):
             def __init__(self, x, y, speed):
                 super().__init__()
+
                 self.images = [pygame.image.load('monkey.png'), pygame.image.load('monkey1.png')]
                 self.index = 0
                 self.image = self.images[self.index]
                 self.rect = self.image.get_rect()
                 self.rect.x = x
                 self.rect.y = y
-                self.speed = gravity
-
-            def change_image(self):
-                self.index = (self.index + 1) % len(self.images)
-                self.image = self.images[self.index]
+                self.speed = speed
+                self.space_pressed = False  # Flag to track space bar state
 
             def update(self):
-                self.rect.move_ip(0, int(gravity))
+                if self.space_pressed:
+                    self.index = 1
+                else:
+                    self.index = 0
+
+                self.image = self.images[self.index]
+                self.rect.move_ip(0, self.speed)
+
+            def set_space_pressed(self, pressed):
+                self.space_pressed = pressed
+
 
 
         
@@ -135,13 +143,16 @@ def play():
                     sys.exit()
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:
-                        player.change_image()
+                        player.set_space_pressed(True)
+                if event.type == pygame.KEYUP:
+                    if event.key == pygame.K_SPACE:
+                        player.set_space_pressed(False)
+
                 
                 
             clock.tick(60)
 
-            if keys[pygame.K_SPACE]:
-                player.change_image()
+         
             #### falling off the map --> break
             if player.rect.y+player_height>screen_height:
                 main_menu()
