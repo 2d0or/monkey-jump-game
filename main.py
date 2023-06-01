@@ -8,6 +8,8 @@ pygame.display.set_caption("Monkey Game")
 
 BG = pygame.image.load("assets/Background.png")
 
+
+
 def get_font(size): # Returns Press-Start-2P in the desired size
     return pygame.font.Font("assets/font.ttf", size)
 
@@ -64,18 +66,7 @@ def play():
 
 
         #define player  = monkey
-        class Monkey(pygame.sprite.Sprite):
-            def __init__(self,x,y, speed):
-                super().__init__()
-                self.image = pygame.image.load('monkey.png')
-                self.rect = self.image.get_rect()
-            
-                self.rect.x = player_x
-                self.rect.y = player_y
-                self.speed = gravity
-
-            def update(self):
-                self.rect.move_ip(0,int(gravity))
+        
 
         class Base(pygame.sprite.Sprite):
             def __init__(self,x,y,base_x, base_y, speed):
@@ -86,9 +77,27 @@ def play():
                 self.rect.x = base_x
                 self.rect.y = base_y
                 self.speed = gravity_base
-
             def update(self):
                 self.rect.move_ip(0,int(gravity_base))
+
+        class Monkey(pygame.sprite.Sprite):
+            def __init__(self, x, y, speed):
+                super().__init__()
+                self.images = [pygame.image.load('monkey.png'), pygame.image.load('monkey1.png')]
+                self.index = 0
+                self.image = self.images[self.index]
+                self.rect = self.image.get_rect()
+                self.rect.x = x
+                self.rect.y = y
+                self.speed = gravity
+
+            def change_image(self):
+                self.index = (self.index + 1) % len(self.images)
+                self.image = self.images[self.index]
+
+            def update(self):
+                self.rect.move_ip(0, int(gravity))
+
 
         
                 
@@ -103,25 +112,36 @@ def play():
 
         #initialize pygame
         pygame.init()
+        image1 = pygame.image.load("monkey.png")
+        image2 = pygame.image.load("monkey1.png")
+        character_images = [image1, image2]
+        current_image_index = 0
+        current_image = character_images[current_image_index]
 
         #colco
         clock = pygame.time.Clock()
-
+        
         #background
         background_image = pygame.image.load("sky1.png")
         background_y = 0
         keys = pygame.key.get_pressed()
         #game conditions 
         while True:
+
+            
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE:
+                        player.change_image()
                 
                 
             clock.tick(60)
 
-
+            if keys[pygame.K_SPACE]:
+                player.change_image()
             #### falling off the map --> break
             if player.rect.y+player_height>screen_height:
                 main_menu()
@@ -198,14 +218,15 @@ def play():
             ## introduce jump mechanics
             if keys[pygame.K_SPACE]:
             # if player.rect.y+player_height==base1.rect.y:
-
                     # Scroll the background
+                
                     print('jump')
                     background_y += 5
 
                     if background_y >= screen_height:
                         background_y = 0
                     player.rect.y -=8
+            
             
          
 
@@ -238,7 +259,6 @@ def play():
             pygame.display.update()
 
 
-            pygame.display.update()
     
 def options():
     while True:
