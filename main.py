@@ -50,7 +50,7 @@ def play():
         base_width = random.randint(100,500)
         base_height = 20
 
-    ##define gravity value 
+    ##define gravity value 1
         gravity = 4
         zero = 0
         gravity_base = 3
