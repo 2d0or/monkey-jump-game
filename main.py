@@ -38,16 +38,16 @@ def play():
 
 
         base_y = 600
-        base_x = 150
+        base_x = random.randint(50,500)
 
         base_y_1 = 150
-        base_x_1 = 150
+        base_x_1 = random.randint(50,500)
 
         base_y_2 = 300
-        base_x_2 = 150
+        base_x_2 = random.randint(50,500)
 
 
-        base_width = 300
+        base_width = random.randint(100,500)
         base_height = 20
 
     ##define gravity value 
@@ -111,7 +111,7 @@ def play():
                 
 
         player = Monkey(player_x, player_y, gravity)
-        base = Base(base_height, base_width, base_x, base_y, gravity_base)
+        base = Base(base_height, base_width,base_x, base_y, gravity_base)
         base1=Base(base_width,base_height,base_x_2,base_y_1,gravity_base)
         base2=Base(base_width,base_height, base_x_2, base_y_2, gravity_base)
 
