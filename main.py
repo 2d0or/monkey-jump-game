@@ -66,8 +66,11 @@ def play():
         #define player  = monkey
         
 
+      
+               
+
         class Base(pygame.sprite.Sprite):
-            def __init__(self,x,y,base_x, base_y, speed):
+            def __init__(self, x, y, width, height, speed):
                 super().__init__()
                 self.image = pygame.Surface((base_width,base_height))
                 self.image.fill('#ffe135')
@@ -75,12 +78,57 @@ def play():
                 self.rect.x = base_x
                 self.rect.y = base_y
                 self.speed = gravity_base
+                
+
+            
             def update(self):
-                self.rect.move_ip(0,int(gravity_base))
-               
+                self.rect.move_ip(0, gravity_base)
+                if self.rect.y >= screen_height:
+                    self.rect.y = -self.rect.height
+                    self.rect.x = random.randint(50, 500)
+                
+            
+
+        class Base1(pygame.sprite.Sprite):
+            def __init__(self, x, y, width, height, speed):
+                super().__init__()
+                self.image = pygame.Surface((base_width,base_height))
+                self.image.fill('#ffe135')
+                self.rect = self.image.get_rect()
+                self.rect.x = base_x_1
+                self.rect.y = base_y_1
+                self.speed = gravity_base
+
+            
+
+
+            def update(self):
+                self.rect.move_ip(0, gravity_base)
+                if self.rect.y >= screen_height:
+                    self.rect.y = -self.rect.height
+                    self.rect.x = random.randint(50, 500)
+                    
+
+        class Base2(pygame.sprite.Sprite):
+            def __init__(self, x, y, width, height, speed):
+                super().__init__()
+                self.image = pygame.Surface((base_width,base_height))
+                self.image.fill('#ffe135')
+                self.rect = self.image.get_rect()
+                self.rect.x = base_x_2
+                self.rect.y = base_y_2
+                self.speed = gravity_base
+        
+            
 
 
 
+            def update(self):
+                self.rect.move_ip(0, gravity_base)
+                if self.rect.y >= screen_height:
+                    self.rect.y = -self.rect.height
+                    self.rect.x = random.randint(50, 500)
+                
 
 
 
@@ -115,9 +163,9 @@ def play():
                 
 
         player = Monkey(player_x, player_y, gravity)
-        base = Base(base_height, base_width,base_x, base_y, gravity_base)
-        base1=Base(base_width,base_height,base_x_2,base_y_1,gravity_base)
-        base2=Base(base_width,base_height, base_x_2, base_y_2, gravity_base)
+        base = Base(base_width,base_height,base_x, base_y, gravity_base)
+        base1=Base1(base_width,base_height,base_x_2,base_y_1,gravity_base)
+        base2=Base2(base_width,base_height, base_x_2, base_y_2, gravity_base)
 
 
         all_sprites = pygame.sprite.Group()
