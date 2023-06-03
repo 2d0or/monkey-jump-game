@@ -1,6 +1,5 @@
 import pygame, sys
 from button import Button
-
 pygame.init()
 
 SCREEN = pygame.display.set_mode((636, 800))
@@ -38,16 +37,15 @@ def play():
 
 
         base_y = 600
-        base_x = random.randint(50,500)
+        base_x = 150
 
         base_y_1 = 150
-        base_x_1 = random.randint(50,500)
+        base_x_1 = 150
 
         base_y_2 = 300
-        base_x_2 = random.randint(50,500)
+        base_x_2 = 150
 
-
-        base_width = random.randint(100,500)
+        base_width = 200
         base_height = 20
 
     ##define gravity value 1
@@ -79,6 +77,12 @@ def play():
                 self.speed = gravity_base
             def update(self):
                 self.rect.move_ip(0,int(gravity_base))
+               
+
+
+
+
+
 
         class Monkey(pygame.sprite.Sprite):
             def __init__(self, x, y, speed):
