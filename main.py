@@ -29,25 +29,30 @@ def play():
         screen_height = 800
         screen_width = 636
 
-        player_width = 50   
+        player_width = 50
         player_height = 50
 
         player_y = 200
         player_x = 250
 
 
-        base_y = 600
+        base_y = 576
         base_x = 150
 
-        base_y_1 = 150
+        base_y_1 = 192
         base_x_1 = 150
 
-        base_y_2 = 300
+        base_y_2 = 384
         base_x_2 = 150
 
         base_width = 200
         base_height = 20
 
+        banana_width = 30
+        banana_height=30
+        banana_x=200
+        banana_y=100
+        gravity_banana=3
     ##define gravity value 1
         gravity = 4
         zero = 0
@@ -70,7 +75,7 @@ def play():
                
 
         class Base(pygame.sprite.Sprite):
-            def __init__(self, x, y, width, height, speed):
+            def __init__(self, width, height, speed):
                 super().__init__()
                 self.image = pygame.Surface((base_width,base_height))
                 self.image.fill('#ffe135')
@@ -90,7 +95,7 @@ def play():
             
 
         class Base1(pygame.sprite.Sprite):
-            def __init__(self, x, y, width, height, speed):
+            def __init__(self, width, height, speed):
                 super().__init__()
                 self.image = pygame.Surface((base_width,base_height))
                 self.image.fill('#ffe135')
@@ -110,7 +115,7 @@ def play():
                     
 
         class Base2(pygame.sprite.Sprite):
-            def __init__(self, x, y, width, height, speed):
+            def __init__(self, width, height,speed):
                 super().__init__()
                 self.image = pygame.Surface((base_width,base_height))
                 self.image.fill('#ffe135')
@@ -119,13 +124,9 @@ def play():
                 self.rect.y = base_y_2
                 self.speed = gravity_base
         
-            
-
-
-
             def update(self):
                 self.rect.move_ip(0, gravity_base)
-                if self.rect.y >= screen_height:
+                if self.rect.y +base_height> screen_height:
                     self.rect.y = -self.rect.height
                     self.rect.x = random.randint(50, 500)
                 
@@ -140,8 +141,8 @@ def play():
                 self.index = 0
                 self.image = self.images[self.index]
                 self.rect = self.image.get_rect()
-                self.rect.x = x
-                self.rect.y = y
+                self.rect.x = player_x
+                self.rect.y = player_y
                 self.speed = speed
                 self.space_pressed = False  # Flag to track space bar state
 
@@ -157,17 +158,36 @@ def play():
             def set_space_pressed(self, pressed):
                 self.space_pressed = pressed
 
+        class banana(pygame.sprite.Sprite):
+            def __init__(self,x,y,width,height,speed):
+                super().__init__()
+                self.image = pygame.Surface((banana_width, banana_height))
+                self.image.fill('#FFFF00')
+                self.rect = self.image.get_rect()
+                self.rect.x = banana_x
+                self.rect.y = banana_y
+                self.speed=gravity_banana
+                
+               
 
+            def update(self):
+                self.rect.move_ip(0,gravity_banana)
+                if player.rect.colliderect(banana.rect):
+                    print('banana_collected')
+                    banana.rect.y = -100
+                    banana.rect.x = random.randint(50,500)
+                   
+                
 
         
                 
 
         player = Monkey(player_x, player_y, gravity)
-        base = Base(base_width,base_height,base_x, base_y, gravity_base)
-        base1=Base1(base_width,base_height,base_x_2,base_y_1,gravity_base)
-        base2=Base2(base_width,base_height, base_x_2, base_y_2, gravity_base)
-
-
+        base = Base(base_width,base_height, gravity_base)
+        base1=Base1(base_width,base_height,gravity_base)
+        base2=Base2(base_width,base_height, gravity_base)
+        banana=banana(banana_width,banana_height,banana_x,banana_y,gravity_banana)
+        all_sprites = pygame.sprite.Group(player, base, base1, base2, banana)  # Add banana to all_sprites group
         all_sprites = pygame.sprite.Group()
 
         #initialize pygame
@@ -260,7 +280,13 @@ def play():
             if collision_base_1==True:
                 player.rect.y -=1
 
-            
+            #--------
+            #gravity_banana
+            if banana.rect.y+banana_height>screen_height:
+                print('banana_border')
+                banana.rect.y=-100
+                banana.rect.x=random.randint(50,500)
+           
             #---------------
             # player movement A&D
 
@@ -293,14 +319,17 @@ def play():
             
          
 
-            if base.rect.y+base_height==screen_height:
+            if base.rect.y+base_height >screen_height:
                 base.rect.y =0
+                base.rect.x = random.randint(50,500)
             
-            if base1.rect.y+base_height ==screen_height:
+            if base1.rect.y+base_height >screen_height:
                 base1.rect.y=0
+                base1.rect.x=random.randint(50,500)
 
-            if base2.rect.y+base_height ==screen_height:
+            if base2.rect.y+base_height >screen_height:
                 base2.rect.y = 0
+                base2.rect.x = random.randint(50,500)
 
             screen.blit(background_image, (0, background_y))
             screen.blit(background_image, (0, background_y - screen_height))
@@ -311,10 +340,12 @@ def play():
             screen.blit(base.image, base.rect)
             screen.blit(base1.image, base1.rect)
             screen.blit(base2.image, base2.rect)
+            screen.blit(banana.image, banana.rect)
             player.update()
             base.update()
             base1.update()
             base2.update()
+            banana.update()
 
             all_sprites.update()
             all_sprites.draw(screen)
