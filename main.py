@@ -198,7 +198,7 @@ def play():
         current_image_index = 0
         current_image = character_images[current_image_index]
 
-        #colco
+        #clock
         clock = pygame.time.Clock()
         
         #background
