@@ -171,8 +171,10 @@ def play():
                 self.space_pressed = pressed
 
 
-            
+
+
         class banana(pygame.sprite.Sprite):
+
             def __init__(self,x,y,width,height,speed):
                 super().__init__()
                 self.image = pygame.Surface((banana_width, banana_height))
@@ -181,18 +183,19 @@ def play():
                 self.rect.x = banana_x
                 self.rect.y = banana_y
                 self.speed=gravity_banana
-                
-                           
+               
 
+                
+               
             def update(self):
                 self.rect.move_ip(0,gravity_banana)
                 if player.rect.colliderect(banana.rect):
                     print('banana_collected')
                     banana.rect.y = -100
                     banana.rect.x = random.randint(50,500)
-                    screen.blit(banana_text, banana_text_rect)
+                   
 
-                    
+
                     
                         
     
@@ -201,13 +204,12 @@ def play():
         base1=Base1(base_width,base_height,base_x_1, base_y_1, gravity_base)
         base2=Base2(base_width,base_height,base_x_2, base_y_2, gravity_base)
         banana=banana(banana_width,banana_height,banana_x,banana_y,gravity_banana)
-        all_sprites = pygame.sprite.Group(player, base, base1, base2, banana)  # Add banana to all_sprites group
+        all_sprites = pygame.sprite.Group(player, base, base1, base2, banana) 
         all_sprites = pygame.sprite.Group()
 
         #initialize pygame
         pygame.init()
        
-            
         image1 = pygame.image.load("monkey.png")
         image2 = pygame.image.load("monkey1.png")
         character_images = [image1, image2]
@@ -222,9 +224,9 @@ def play():
         background_y = 0
         keys = pygame.key.get_pressed()
         #game conditions 
-        banana_font = pygame.font.Font("assets/font1.ttf", 30)
-        banana_text = banana_font.render("Bananas Collected", True, green)
-        banana_text_rect = banana_text.get_rect(center=(250, 300))
+        
+        banana_collected=0
+
         while True:
 
 
@@ -314,6 +316,10 @@ def play():
 
             #screen.blit(background_image, (0, background_y))
             #screen.blit(background_image, (0, background_y - screen_height))
+            if player.rect.colliderect(banana.rect):
+                screen.blit(pop_up, pop_up_rect)
+                banana_collected=banana_collected+1
+            bananas_collected=int(banana_collected)
 
             screen.fill((255,255,255))
 
@@ -327,6 +333,15 @@ def play():
             base1.update()
             base2.update()
             banana.update()
+            banana_font = pygame.font.Font("assets/font.ttf", 30)
+            banana_text = banana_font.render(str(bananas_collected), True, green)
+            banana_text_rect = banana_text.get_rect(center=(500,200))
+            pop_up_font = pygame.font.Font("assets/font.ttf", 30)
+            pop_up = pop_up_font.render(str('banana collected'), True, green)
+            pop_up_rect = pop_up.get_rect()
+            pop_up_rect.x = banana.rect.x
+            pop_up_rect.y = banana.rect.y
+            screen.blit(banana_text, banana_text_rect)
             all_sprites.update()
             all_sprites.draw(screen)
 
