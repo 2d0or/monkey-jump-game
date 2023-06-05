@@ -68,7 +68,7 @@ def play():
         pygame.display.set_caption('Monkey Game')
 
         class Base(pygame.sprite.Sprite):
-            def __init__(self, width, height, speed):
+            def __init__(self,x,y, width, height, speed):
                 super().__init__()
                 self.image = pygame.Surface((base_width,base_height))
                 self.image.fill('#ffe135')
@@ -82,13 +82,19 @@ def play():
             def update(self):
                 self.rect.move_ip(0, gravity_base)
                 if self.rect.y >= screen_height:
-                    self.rect.y = -self.rect.height
+                    self.rect.y = -50
                     self.rect.x = random.randint(50, 500)
+
+                if player.rect.colliderect(base.rect):
+                    print('collision_base')
+                    if player.rect.y+player_height>base.rect.y and player.rect.y+player_height<base.rect.y+base_height:
+                        player.rect.y -=1
+                        
                 
             
 
         class Base1(pygame.sprite.Sprite):
-            def __init__(self, width, height, speed):
+            def __init__(self,x,y, width, height, speed):
                 super().__init__()
                 self.image = pygame.Surface((base_width,base_height))
                 self.image.fill('#ffe135')
@@ -96,32 +102,45 @@ def play():
                 self.rect.x = base_x_1
                 self.rect.y = base_y_1
                 self.speed = gravity_base
+                
 
             
-
-
             def update(self):
                 self.rect.move_ip(0, gravity_base)
                 if self.rect.y >= screen_height:
-                    self.rect.y = -self.rect.height
+                    self.rect.y = -50
                     self.rect.x = random.randint(50, 500)
+
+                if player.rect.colliderect(base1.rect):
+                    print('collision_base1')
+                    if player.rect.y+player_height>base1.rect.y and player.rect.y+player_height<base1.rect.y+base_height:
+                        player.rect.y -=1
+                        
                     
 
         class Base2(pygame.sprite.Sprite):
-            def __init__(self, width, height,speed):
+            def __init__(self,x,y, width, height, speed):
                 super().__init__()
                 self.image = pygame.Surface((base_width,base_height))
                 self.image.fill('#ffe135')
-                self.rect = self.image.get_rect()   
+                self.rect = self.image.get_rect()
                 self.rect.x = base_x_2
                 self.rect.y = base_y_2
                 self.speed = gravity_base
-        
+                
+
+            
             def update(self):
                 self.rect.move_ip(0, gravity_base)
-                if self.rect.y +base_height> screen_height:
-                    self.rect.y = -self.rect.height
+                if self.rect.y >= screen_height:
+                    self.rect.y = -50
                     self.rect.x = random.randint(50, 500)
+
+                if player.rect.colliderect(base2.rect) and player.rect.y+player_height<base2.rect.y+base_height:
+                    print('collision_base2')
+                    if player.rect.y+player_height>base2.rect.y:
+                        player.rect.y -=1
+                        
                 
 
 
@@ -147,13 +166,12 @@ def play():
 
                 self.image = self.images[self.index]
                 self.rect.move_ip(0, self.speed)
-
+               
             def set_space_pressed(self, pressed):
                 self.space_pressed = pressed
 
 
             
-        banana_collected = 0
         class banana(pygame.sprite.Sprite):
             def __init__(self,x,y,width,height,speed):
                 super().__init__()
@@ -179,9 +197,9 @@ def play():
                         
     
         player = Monkey(player_x, player_y, gravity)
-        base = Base(base_width,base_height, gravity_base)
-        base1=Base1(base_width,base_height,gravity_base)
-        base2=Base2(base_width,base_height, gravity_base)
+        base = Base(base_width,base_height, base_x, base_y, gravity_base)
+        base1=Base1(base_width,base_height,base_x_1, base_y_1, gravity_base)
+        base2=Base2(base_width,base_height,base_x_2, base_y_2, gravity_base)
         banana=banana(banana_width,banana_height,banana_x,banana_y,gravity_banana)
         all_sprites = pygame.sprite.Group(player, base, base1, base2, banana)  # Add banana to all_sprites group
         all_sprites = pygame.sprite.Group()
@@ -241,48 +259,7 @@ def play():
                 main_menu()
                 
 
-            #--------
-            # introduce player collision with base & gravits
-            # collision base bottom
-            if player.rect.y+player_height==base.rect.y:
-                player.rect.y-= 1
-                print('collision_base')
-                collision_base_2 = 1
-            else: 
-                collision_base_2= False
-            #--------------
-            #palyer collision left right 
-            if player.rect.x+player_width<base.rect.x:
-                player.rect.y +=4
-
-            if player.rect.x>base.rect.x+base_width:
-                player.rect.y +=4
-            
-         
-               
-            #-----------
-            #collision base 2
-
-            if player.rect.y+player_height== base2.rect.y:
-                print('collision_base_2')
-                collision_base_2=True
-            else:
-                collision_base_2==False
-
-            if collision_base_2==True:
-                player.rect.y -=1
-
-            #---------------
-            #collision base 1 
-            if player.rect.y+player_height==base1.rect.y:
-                collision_base_1=1
-                collision_base_1=True
-                print('collision_base_1')
-            else:
-                collision_base_1=False
-
-            if collision_base_1==True:
-                player.rect.y -=1
+            #
 
             #--------
             #gravity_banana
