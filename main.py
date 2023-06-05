@@ -215,7 +215,7 @@ def play():
         current_image = character_images[current_image_index]
 
         #clock
-        clock = pygame.time.Clock()
+        clock = pygame.time.Clock() 
         
         #background
         background_image = pygame.image.load("sky1.png")
