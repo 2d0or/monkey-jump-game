@@ -14,7 +14,6 @@ def get_font(size): # Returns Press-Start-2P in the desired size
 
 
 
-
 def play():
     while True:
         #PLAY_MOUSE_POS = pygame.mouse.get_pos()
@@ -53,26 +52,20 @@ def play():
         banana_x=200
         banana_y=100
         gravity_banana=3
-    ##define gravity value 1
+        ##define gravity value 1
         gravity = 4
         zero = 0
         gravity_base = 3
-
-
+        green = (225,225,225)
+        
+      
+                            
         size = (screen_width, screen_height)
         screen = pygame.display.set_mode(size)
 
 
-    #name of the window
+        #name of the window
         pygame.display.set_caption('Monkey Game')
-
-
-
-        #define player  = monkey
-        
-
-      
-               
 
         class Base(pygame.sprite.Sprite):
             def __init__(self, width, height, speed):
@@ -119,7 +112,7 @@ def play():
                 super().__init__()
                 self.image = pygame.Surface((base_width,base_height))
                 self.image.fill('#ffe135')
-                self.rect = self.image.get_rect()
+                self.rect = self.image.get_rect()   
                 self.rect.x = base_x_2
                 self.rect.y = base_y_2
                 self.speed = gravity_base
@@ -158,6 +151,9 @@ def play():
             def set_space_pressed(self, pressed):
                 self.space_pressed = pressed
 
+
+            
+        banana_collected = 0
         class banana(pygame.sprite.Sprite):
             def __init__(self,x,y,width,height,speed):
                 super().__init__()
@@ -168,7 +164,7 @@ def play():
                 self.rect.y = banana_y
                 self.speed=gravity_banana
                 
-               
+                           
 
             def update(self):
                 self.rect.move_ip(0,gravity_banana)
@@ -176,11 +172,11 @@ def play():
                     print('banana_collected')
                     banana.rect.y = -100
                     banana.rect.x = random.randint(50,500)
-                   
-                
+                    screen.blit(banana_text, banana_text_rect)
 
-        
-                
+                    
+                    
+                        
 
         player = Monkey(player_x, player_y, gravity)
         base = Base(base_width,base_height, gravity_base)
@@ -192,6 +188,8 @@ def play():
 
         #initialize pygame
         pygame.init()
+       
+            
         image1 = pygame.image.load("monkey.png")
         image2 = pygame.image.load("monkey1.png")
         character_images = [image1, image2]
@@ -206,9 +204,12 @@ def play():
         background_y = 0
         keys = pygame.key.get_pressed()
         #game conditions 
+        banana_font = pygame.font.Font("assets/font1.ttf", 30)
+        banana_text = banana_font.render("Bananas Collected", True, green)
+        banana_text_rect = banana_text.get_rect(center=(250, 300))
         while True:
 
-            
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -219,10 +220,12 @@ def play():
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_SPACE:
                         player.set_space_pressed(False)
-
                 
+
+               
                 
             clock.tick(60)
+
 
          
             #### falling off the map --> break
@@ -255,7 +258,8 @@ def play():
             if player.rect.x>base.rect.x+base_width:
                 player.rect.y +=4
             
-
+         
+               
             #-----------
             #collision base 2
 
@@ -294,13 +298,13 @@ def play():
 
             if keys[pygame.K_a]:
                 player.rect.x -=3
-                print('player_move_-x')
+                #print('player_move_-x')
 
 
 
             if keys[pygame.K_d]:
                 player.rect.x +=3
-                print('player_move_x')   
+               # print('player_move_x')   
 
 
 
@@ -309,7 +313,7 @@ def play():
             # if player.rect.y+player_height==base1.rect.y:
                     # Scroll the background
                 
-                    print('jump')
+                    #print('jump')
                     background_y += 5
 
                     if background_y >= screen_height:
@@ -337,16 +341,15 @@ def play():
             #screen.fill((255,255,255))
 
             screen.blit(player.image,player.rect)
-            screen.blit(base.image, base.rect)
-            screen.blit(base1.image, base1.rect)
-            screen.blit(base2.image, base2.rect)
+            #screen.blit(base.image, base.rect)
+            #screen.blit(base1.image, base1.rect)
+            #screen.blit(base2.image, base2.rect)
             screen.blit(banana.image, banana.rect)
             player.update()
-            base.update()
-            base1.update()
-            base2.update()
+            #base.update()
+            #base1.update()
+            #base2.update()
             banana.update()
-
             all_sprites.update()
             all_sprites.draw(screen)
 
@@ -382,6 +385,7 @@ def options():
         pygame.display.update()
 
 def main_menu():
+    global banana_collected  
     while True:
         SCREEN.blit(BG, (0, 0))
         keys = pygame.key.get_pressed()
