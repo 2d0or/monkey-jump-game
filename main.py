@@ -177,7 +177,7 @@ def play():
                     
                     
                         
-
+    
         player = Monkey(player_x, player_y, gravity)
         base = Base(base_width,base_height, gravity_base)
         base1=Base1(base_width,base_height,gravity_base)
