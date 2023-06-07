@@ -173,10 +173,11 @@ def play():
                 self.space_pressed = pressed
 
 
+        message_duration=60
 
         class Banana(pygame.sprite.Sprite):
 
-            def __init__(self,x,y,width,height,speed):
+            def __init__(self,x,y,width,height,speed,message_duration):
                 super().__init__()
                 self.image = pygame.Surface((banana_width, banana_height))
                 self.image.fill('#FFFF00')
@@ -184,18 +185,30 @@ def play():
                 self.rect.x = banana_x
                 self.rect.y = banana_y
                 self.speed=gravity_banana
-               
-
+                self.message_duration = message_duration
+                self.timer=0
+                self.show_popup = False
+                self.pop_up_font = pygame.font.Font("assets/font.ttf", 30)
+                self.pop_up = self.pop_up_font.render(str('banana collected'), True, green)
+                self.pop_up_rect = self.pop_up.get_rect()
                 
-
+            
             def update(self, screen):
-                show_popup = False
                 self.rect.move_ip(0,gravity_banana)
                 if player.rect.colliderect(banana.rect):
-                    screen.blit(pop_up, pop_up_rect)
+                    self.pop_up_rect.x = self.rect.x
+                    self.pop_up_rect.y = self.rect.y
+                    #screen.blit(pop_up, pop_up_rect)
+                    self.timer=self.message_duration
+                    self.show_popup = True
                     print('banana_collected')
                     banana.rect.y = -100
                     banana.rect.x = random.randint(50,500)
+
+                
+                if self.timer > 0:
+                    self.timer -= 1
+                    screen.blit(self.pop_up, self.pop_up_rect)
                    
 
 
@@ -206,7 +219,7 @@ def play():
         base = Base(base_width,base_height, base_x, base_y, gravity_base)
         base1=Base1(base_width,base_height,base_x_1, base_y_1, gravity_base)
         base2=Base2(base_width,base_height,base_x_2, base_y_2, gravity_base)
-        banana=Banana(banana_width,banana_height,banana_x,banana_y,gravity_banana)
+        banana=Banana(banana_width,banana_height,banana_x,banana_y,gravity_banana,message_duration)
         all_sprites = pygame.sprite.Group(player, base, base1, base2, banana) 
         all_sprites = pygame.sprite.Group()
 
@@ -220,8 +233,8 @@ def play():
         current_image = character_images[current_image_index]
         
         #background
-        background_image = pygame.image.load("sky1.png")
-        background_y = 0
+        #background_image = pygame.image.load("sky1.png")
+        #background_y = 0
         keys = pygame.key.get_pressed()
         #game conditions 
         
@@ -251,11 +264,7 @@ def play():
                 
             clock.tick(60)
 
-            pop_up_font = pygame.font.Font("assets/font.ttf", 30)
-            pop_up = pop_up_font.render(str('banana collected'), True, green)
-            pop_up_rect = pop_up.get_rect()
-            pop_up_rect.x = banana.rect.x
-            pop_up_rect.y = banana.rect.y         
+                    
             #### falling off the map --> break
             if player.rect.y+player_height>screen_height:
                 main_menu()
@@ -301,11 +310,11 @@ def play():
                     # Scroll the background
                 
                     #print('jump')
-                    background_y += 5
+                    #background_y += 5
 
-                    if background_y >= screen_height:
-                        background_y = 0
-                    player.rect.y -=8
+                    #if background_y >= screen_height:
+                        #background_y = 0
+                player.rect.y -=8
             
             
          
@@ -326,7 +335,7 @@ def play():
             #screen.blit(background_image, (0, background_y - screen_height))
             if player.rect.colliderect(banana.rect):
                 banana_collected=banana_collected+1
-                screen.blit(pop_up, pop_up_rect)
+                #screen.blit(pop_up, pop_up_rect)
 
 
             bananas_collected=int(banana_collected)
