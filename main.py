@@ -190,6 +190,7 @@ def play():
             def update(self):
                 self.rect.move_ip(0,gravity_banana)
                 if player.rect.colliderect(banana.rect):
+                    screen.blit(pop_up, pop_up_rect)
                     print('banana_collected')
                     banana.rect.y = -100
                     banana.rect.x = random.randint(50,500)
@@ -246,8 +247,11 @@ def play():
                 
             clock.tick(60)
 
-
-         
+            pop_up_font = pygame.font.Font("assets/font.ttf", 30)
+            pop_up = pop_up_font.render(str('banana collected'), True, green)
+            pop_up_rect = pop_up.get_rect()
+            pop_up_rect.x = banana.rect.x
+            pop_up_rect.y = banana.rect.y         
             #### falling off the map --> break
             if player.rect.y+player_height>screen_height:
                 main_menu()
@@ -317,8 +321,8 @@ def play():
             #screen.blit(background_image, (0, background_y))
             #screen.blit(background_image, (0, background_y - screen_height))
             if player.rect.colliderect(banana.rect):
-                screen.blit(pop_up, pop_up_rect)
                 banana_collected=banana_collected+1
+
             bananas_collected=int(banana_collected)
 
             screen.fill((255,255,255))
@@ -336,11 +340,6 @@ def play():
             banana_font = pygame.font.Font("assets/font.ttf", 30)
             banana_text = banana_font.render(str(bananas_collected), True, green)
             banana_text_rect = banana_text.get_rect(center=(500,200))
-            pop_up_font = pygame.font.Font("assets/font.ttf", 30)
-            pop_up = pop_up_font.render(str('banana collected'), True, green)
-            pop_up_rect = pop_up.get_rect()
-            pop_up_rect.x = banana.rect.x
-            pop_up_rect.y = banana.rect.y
             screen.blit(banana_text, banana_text_rect)
             all_sprites.update()
             all_sprites.draw(screen)
