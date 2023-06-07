@@ -1,5 +1,6 @@
 import pygame, sys
 from button import Button
+import pygame.time
 pygame.init()
 
 SCREEN = pygame.display.set_mode((636, 800))
@@ -16,6 +17,7 @@ def get_font(size): # Returns Press-Start-2P in the desired size
 
 def play():
     while True:
+        
         #PLAY_MOUSE_POS = pygame.mouse.get_pos()
 
         SCREEN.fill("black")
@@ -62,7 +64,7 @@ def play():
                             
         size = (screen_width, screen_height)
         screen = pygame.display.set_mode(size)
-
+       
 
         #name of the window
         pygame.display.set_caption('Monkey Game')
@@ -172,8 +174,7 @@ def play():
 
 
 
-
-        class banana(pygame.sprite.Sprite):
+        class Banana(pygame.sprite.Sprite):
 
             def __init__(self,x,y,width,height,speed):
                 super().__init__()
@@ -186,8 +187,9 @@ def play():
                
 
                 
-               
-            def update(self):
+
+            def update(self, screen):
+                show_popup = False
                 self.rect.move_ip(0,gravity_banana)
                 if player.rect.colliderect(banana.rect):
                     screen.blit(pop_up, pop_up_rect)
@@ -204,7 +206,7 @@ def play():
         base = Base(base_width,base_height, base_x, base_y, gravity_base)
         base1=Base1(base_width,base_height,base_x_1, base_y_1, gravity_base)
         base2=Base2(base_width,base_height,base_x_2, base_y_2, gravity_base)
-        banana=banana(banana_width,banana_height,banana_x,banana_y,gravity_banana)
+        banana=Banana(banana_width,banana_height,banana_x,banana_y,gravity_banana)
         all_sprites = pygame.sprite.Group(player, base, base1, base2, banana) 
         all_sprites = pygame.sprite.Group()
 
@@ -216,9 +218,6 @@ def play():
         character_images = [image1, image2]
         current_image_index = 0
         current_image = character_images[current_image_index]
-
-        #clock
-        clock = pygame.time.Clock() 
         
         #background
         background_image = pygame.image.load("sky1.png")
@@ -227,14 +226,19 @@ def play():
         #game conditions 
         
         banana_collected=0
+        clock = pygame.time.Clock() 
 
+  
         while True:
+           
+           
 
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+                    #player pic
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:
                         player.set_space_pressed(True)
@@ -289,7 +293,7 @@ def play():
                 player.rect.x +=3
                # print('player_move_x')   
 
-
+            
 
             ## introduce jump mechanics
             if keys[pygame.K_SPACE]:
@@ -322,6 +326,8 @@ def play():
             #screen.blit(background_image, (0, background_y - screen_height))
             if player.rect.colliderect(banana.rect):
                 banana_collected=banana_collected+1
+                screen.blit(pop_up, pop_up_rect)
+
 
             bananas_collected=int(banana_collected)
 
@@ -336,13 +342,14 @@ def play():
             base.update()
             base1.update()
             base2.update()
-            banana.update()
+            banana.update(screen)
             banana_font = pygame.font.Font("assets/font.ttf", 30)
             banana_text = banana_font.render(str(bananas_collected), True, green)
             banana_text_rect = banana_text.get_rect(center=(500,200))
             screen.blit(banana_text, banana_text_rect)
             all_sprites.update()
             all_sprites.draw(screen)
+
 
             pygame.display.update()
 
