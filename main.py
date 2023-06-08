@@ -8,8 +8,6 @@ pygame.display.set_caption("Monkey Game")
 
 BG = pygame.image.load("assets/Background.png")
 
-
-
 def get_font(size): # Returns Press-Start-2P in the desired size
     return pygame.font.Font("assets/font1.ttf", size)
 
@@ -211,12 +209,7 @@ def play():
                 if self.timer > 0:
                     self.timer -= 1
                     screen.blit(self.pop_up, self.pop_up_rect)
-                   
-
-
-                    
-                        
-    
+                
         player = Monkey(player_x, player_y, gravity)
         base = Base(base_width,base_height, base_x, base_y, gravity_base)
         base1=Base1(base_width,base_height,base_x_1, base_y_1, gravity_base)
