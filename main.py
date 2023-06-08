@@ -33,17 +33,17 @@ def play():
         player_width = 50
         player_height = 50
 
-        player_y = 200
+        player_y = 340
         player_x = 250
 
 
         base_y = 576
-        base_x = 150
+        base_x = random.randint(50,300)
 
         base_y_1 = 192
-        base_x_1 = 150
+        base_x_1 = random.randint(50,300)
 
-        base_y_2 = 384
+        base_y_2 = 380
         base_x_2 = 150
 
         base_width = 200
@@ -51,7 +51,7 @@ def play():
 
         banana_width = 30
         banana_height=30
-        banana_x=200
+        banana_x=random.randint(100,400)
         banana_y=100
         gravity_banana=3
         ##define gravity value 1
@@ -64,6 +64,8 @@ def play():
                             
         size = (screen_width, screen_height)
         screen = pygame.display.set_mode(size)
+        bitefx = pygame.mixer.Sound("assets/bite.mp3")
+        lvl_up_fx=pygame.mixer.Sound("assets/level_up.wav")
        
 
         #name of the window
@@ -188,7 +190,7 @@ def play():
                 self.message_duration = message_duration
                 self.timer=0
                 self.show_popup = False
-                self.pop_up_font = pygame.font.Font("assets/font.ttf", 30)
+                self.pop_up_font = pygame.font.Font("assets/font.ttf", 15)
                 self.pop_up = self.pop_up_font.render(str('banana collected'), True, green)
                 self.pop_up_rect = self.pop_up.get_rect()
                 
@@ -196,14 +198,14 @@ def play():
             def update(self, screen):
                 self.rect.move_ip(0,gravity_banana)
                 if player.rect.colliderect(banana.rect):
-                    self.pop_up_rect.x = self.rect.x
+                    pygame.mixer.Sound.play(bitefx)
+                    self.pop_up_rect.x = self.rect.x-self.pop_up_rect.x/2
                     self.pop_up_rect.y = self.rect.y
-                    #screen.blit(pop_up, pop_up_rect)
                     self.timer=self.message_duration
                     self.show_popup = True
                     print('banana_collected')
                     banana.rect.y = -100
-                    banana.rect.x = random.randint(50,500)
+                    banana.rect.x = random.randint(100,400)
 
                 
                 if self.timer > 0:
@@ -335,10 +337,12 @@ def play():
             #screen.blit(background_image, (0, background_y - screen_height))
             if player.rect.colliderect(banana.rect):
                 banana_collected=banana_collected+1
-                #screen.blit(pop_up, pop_up_rect)
 
 
             bananas_collected=int(banana_collected)
+            if banana_collected%10==0 and banana_collected>1:
+                pygame.mixer.Sound.play(lvl_up_fx)
+
 
             screen.fill((255,255,255))
 
