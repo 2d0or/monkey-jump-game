@@ -7,6 +7,7 @@ SCREEN = pygame.display.set_mode((636, 800))
 pygame.display.set_caption("Monkey Game")
 
 BG = pygame.image.load("assets/Background.png")
+rev_screen = pygame.image.load("assets/rev_screen.png")
 
 def get_font(size): # Returns Press-Start-2P in the desired size
     return pygame.font.Font("assets/font1.ttf", size)
@@ -16,8 +17,6 @@ def get_font(size): # Returns Press-Start-2P in the desired size
 def play():
     while True:
         
-        #PLAY_MOUSE_POS = pygame.mouse.get_pos()
-
         SCREEN.fill("black")
         import pygame
         import sys 
@@ -31,7 +30,7 @@ def play():
         player_width = 50
         player_height = 50
 
-        player_y = 340
+        player_y = 330
         player_x = 250
 
 
@@ -56,7 +55,7 @@ def play():
         gravity = 4
         zero = 0
         gravity_base = 3
-        green = (225,225,225)
+        green = (124,225,0) 
         
       
                             
@@ -180,7 +179,7 @@ def play():
             def __init__(self,x,y,width,height,speed,message_duration):
                 super().__init__()
                 self.image = pygame.Surface((banana_width, banana_height))
-                self.image.fill('#FFFF00')
+                self.image.fill('#FDB833')
                 self.rect = self.image.get_rect()
                 self.rect.x = banana_x
                 self.rect.y = banana_y
@@ -227,21 +226,15 @@ def play():
         current_image_index = 0
         current_image = character_images[current_image_index]
         
-        #background
-        #background_image = pygame.image.load("sky1.png")
-        #background_y = 0
+       
         keys = pygame.key.get_pressed()
         #game conditions 
         
         banana_collected=0
-        clock = pygame.time.Clock() 
-
+        clock = pygame.time.Clock()
+        # Load the background image and get its height
   
         while True:
-           
-           
-
-
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -253,20 +246,18 @@ def play():
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_SPACE:
                         player.set_space_pressed(False)
-                
-
-               
+                            
                 
             clock.tick(60)
 
                     
             #### falling off the map --> break
             if player.rect.y+player_height>screen_height:
-                main_menu()
+                revive_screen()
             
             if player.rect.y<0:
                 print('sky')
-                main_menu()
+                revive_screen()
 
             if keys[pygame.K_ESCAPE]:
                 print('Space')
@@ -301,14 +292,7 @@ def play():
 
             ## introduce jump mechanics
             if keys[pygame.K_SPACE]:
-            # if player.rect.y+player_height==base1.rect.y:
-                    # Scroll the background
-                
-                    #print('jump')
-                    #background_y += 5
-
-                    #if background_y >= screen_height:
-                        #background_y = 0
+            
                 player.rect.y -=8
             
             
@@ -337,8 +321,7 @@ def play():
                 pygame.mixer.Sound.play(lvl_up_fx)
 
 
-            screen.fill((255,255,255))
-
+            screen.fill((255,255,255))  
             screen.blit(player.image,player.rect)
             screen.blit(base.image, base.rect)
             screen.blit(base1.image, base1.rect)
@@ -426,7 +409,6 @@ def main_menu():
                 if QUIT_BUTTON.checkForInput(MENU_MOUSE_POS):
                     pygame.quit()
                     sys.exit()
-                print('mouse_button_down')
             if keys[pygame.K_SPACE]:
                 print('Space')
                 play()
@@ -435,6 +417,28 @@ def main_menu():
                 sys.exit()
         pygame.display.update()
 
+def revive_screen():
+    while True:
+        SCREEN.blit(rev_screen, (0, 0))
+        keys = pygame.key.get_pressed()
+        mouse_pos = pygame.mouse.get_pos()
+        rev_text = get_font(60).render('YOU DIED', True, '#296EB4')
+        rev_text_rect = rev_text.get_rect(center=(320,100))
+        rev_text1 = get_font(60).render('PRESS R TO RETRY', True, '#296EB4')
+        rev_text1_rect = rev_text1.get_rect(center=(320,200))
+        SCREEN.blit(rev_text,rev_text_rect)
+        SCREEN.blit(rev_text1,rev_text1_rect)
+
+        for event in pygame.event.get():
+            if event.type ==pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if keys[pygame.K_r]:
+                play()
+            if keys[pygame.K_ESCAPE]:
+                main_menu()
+
+        pygame.display.update()
 
 main_menu()
 
