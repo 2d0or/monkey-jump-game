@@ -1,6 +1,7 @@
 import pygame, sys
 from button import Button
 import pygame.time
+import progress_bar
 pygame.init()
 
 SCREEN = pygame.display.set_mode((636, 800))
@@ -12,11 +13,8 @@ rev_screen = pygame.image.load("assets/rev_screen.png")
 def get_font(size): # Returns Press-Start-2P in the desired size
     return pygame.font.Font("assets/font1.ttf", size)
 
-
-
 def play():
     while True:
-        
         SCREEN.fill("black")
         import pygame
         import sys 
@@ -343,33 +341,7 @@ def play():
             pygame.display.update()
 
 
-    
-def options():
-    while True:
-        OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
 
-        SCREEN.fill("white")
-
-        OPTIONS_TEXT = get_font(15).render("Nothing here yet.", True, "Black")
-        OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=(350, 260))
-        SCREEN.blit(OPTIONS_TEXT, OPTIONS_RECT)
-
-        OPTIONS_BACK = Button(image=None, pos=(300, 460), 
-                            text_input="BACK", font=get_font(75), base_color="Black", hovering_color="Green")
-
-        OPTIONS_BACK.changeColor(OPTIONS_MOUSE_POS)
-        OPTIONS_BACK.update(SCREEN)
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if OPTIONS_BACK.checkForInput(OPTIONS_MOUSE_POS):
-                    SCREEN.fill('White')
-                    main_menu()
-
-        pygame.display.update()
 
 def main_menu():
     global banana_collected  
@@ -417,6 +389,37 @@ def main_menu():
                 sys.exit()
         pygame.display.update()
 
+
+    
+def options():
+    while True:
+        OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
+
+        SCREEN.fill("white")
+
+        OPTIONS_TEXT = get_font(15).render("Nothing here yet.", True, "Black")
+        OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=(350, 260))
+        SCREEN.blit(OPTIONS_TEXT, OPTIONS_RECT)
+
+        OPTIONS_BACK = Button(image=None, pos=(300, 460), 
+                            text_input="BACK", font=get_font(75), base_color="Black", hovering_color="Green")
+
+        OPTIONS_BACK.changeColor(OPTIONS_MOUSE_POS)
+        OPTIONS_BACK.update(SCREEN)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if OPTIONS_BACK.checkForInput(OPTIONS_MOUSE_POS):
+                    SCREEN.fill('White')
+                    main_menu()
+
+        pygame.display.update()
+
+
+
 def revive_screen():
     while True:
         SCREEN.blit(rev_screen, (0, 0))
@@ -440,5 +443,6 @@ def revive_screen():
 
         pygame.display.update()
 
-main_menu()
 
+main_menu()
+    
