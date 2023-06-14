@@ -55,14 +55,11 @@ def play():
         green = (124,225,0) 
         bright_green = (0, 255, 0)
         dark_green = (0, 128, 0)
-        bar_width, bar_height = 150, 15
+        bar_width=150
+        bar_height = 15
         bar_x, bar_y = 50,600
-        bar_fill = 0
-        bar_speed = 2
-        resetting = False
-        filled_width = bar_x + bar_width - bar_fill
-        color_interval = 1
-        color_timer = 0
+        bar_speed =1.5
+       # resetting = False
         current_color = bright_green
 
         
@@ -214,28 +211,11 @@ def play():
                     print('banana_collected')
                     banana.rect.y = -100
                     banana.rect.x = random.randint(100,400)
+                    print('prg_bar')
 
-                
                 if self.timer > 0:
                     self.timer -= 1
                     screen.blit(self.pop_up, self.pop_up_rect)
-
-        def run_progress_bar(banana_collected,revive_screen):
-
-
-
-            if banana_collected ==True:
-                print('prg_bar')
-                bar_fill=0
-
-                # Update the bar fill
-            if bar_fill < bar_width:
-                bar_fill += bar_speed
-                
-            if bar_fill>bar_width:
-                revive_screen()
-
-        
         player = Monkey(player_x, player_y, gravity)
         base = Base(base_width,base_height, base_x, base_y, gravity_base)
         base1=Base1(base_width,base_height,base_x_1, base_y_1, gravity_base)
@@ -258,10 +238,14 @@ def play():
         #game conditions 
         
         banana_collected=0
+        bar_fill=0
+        
         clock = pygame.time.Clock()
         # Load the background image and get its height
-  
+        
         while True:
+            
+                    
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -290,8 +274,13 @@ def play():
                 print('Space')
                 main_menu()
                 
-
-            #
+            if bar_fill < bar_width:
+                #print('barr_fill')
+                bar_fill += bar_speed
+                                
+            if bar_fill==bar_width:
+                    #print('bar_full')
+                revive_screen()
 
             #--------
             #gravity_banana
@@ -341,6 +330,8 @@ def play():
             #screen.blit(background_image, (0, background_y - screen_height))
             if player.rect.colliderect(banana.rect):
                 banana_collected=banana_collected+1
+                print('0bar_fil')
+                bar_fill=0
 
 
             bananas_collected=int(banana_collected)
@@ -364,7 +355,7 @@ def play():
             banana_text_rect = banana_text.get_rect(center=(500,200))
             screen.blit(banana_text, banana_text_rect)
             pygame.draw.rect(screen, dark_green, (bar_x, bar_y, bar_width, bar_height))
-            pygame.draw.rect(screen, current_color, (filled_width, bar_y, bar_fill, bar_height))
+            pygame.draw.rect(screen, current_color, (bar_x, bar_y, bar_fill, bar_height))
            
             all_sprites.update()
             all_sprites.draw(screen)
