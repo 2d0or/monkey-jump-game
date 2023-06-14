@@ -1,7 +1,6 @@
 import pygame, sys
 from button import Button
 import pygame.time
-import progress_bar
 pygame.init()
 
 SCREEN = pygame.display.set_mode((636, 800))
@@ -54,6 +53,20 @@ def play():
         zero = 0
         gravity_base = 3
         green = (124,225,0) 
+        bright_green = (0, 255, 0)
+        dark_green = (0, 128, 0)
+        bar_width, bar_height = 150, 15
+        bar_x, bar_y = 50,600
+        bar_fill = 0
+        bar_speed = 2
+        resetting = False
+        filled_width = bar_x + bar_width - bar_fill
+        color_interval = 1
+        color_timer = 0
+        current_color = bright_green
+
+        
+
         
       
                             
@@ -206,7 +219,23 @@ def play():
                 if self.timer > 0:
                     self.timer -= 1
                     screen.blit(self.pop_up, self.pop_up_rect)
+
+        def run_progress_bar(banana_collected,revive_screen):
+
+
+
+            if banana_collected ==True:
+                print('prg_bar')
+                bar_fill=0
+
+                # Update the bar fill
+            if bar_fill < bar_width:
+                bar_fill += bar_speed
                 
+            if bar_fill>bar_width:
+                revive_screen()
+
+        
         player = Monkey(player_x, player_y, gravity)
         base = Base(base_width,base_height, base_x, base_y, gravity_base)
         base1=Base1(base_width,base_height,base_x_1, base_y_1, gravity_base)
@@ -334,6 +363,9 @@ def play():
             banana_text = banana_font.render(str(bananas_collected), True, green)
             banana_text_rect = banana_text.get_rect(center=(500,200))
             screen.blit(banana_text, banana_text_rect)
+            pygame.draw.rect(screen, dark_green, (bar_x, bar_y, bar_width, bar_height))
+            pygame.draw.rect(screen, current_color, (filled_width, bar_y, bar_fill, bar_height))
+           
             all_sprites.update()
             all_sprites.draw(screen)
 
@@ -424,7 +456,6 @@ def revive_screen():
     while True:
         SCREEN.blit(rev_screen, (0, 0))
         keys = pygame.key.get_pressed()
-        mouse_pos = pygame.mouse.get_pos()
         rev_text = get_font(60).render('YOU DIED', True, '#296EB4')
         rev_text_rect = rev_text.get_rect(center=(320,100))
         rev_text1 = get_font(60).render('PRESS R TO RETRY', True, '#296EB4')

@@ -8,7 +8,7 @@ def run_progress_bar(banana_collected,revive_screen):
     pygame.init()
 
     # Set up the display
-    screen_width, screen_height = 800, 200
+    screen_width, screen_height = 636,800
     screen = pygame.display.set_mode((screen_width, screen_height))
     pygame.display.set_caption("Progress Bar")
 
@@ -74,6 +74,7 @@ def run_progress_bar(banana_collected,revive_screen):
 
         # Update the display
         pygame.display.flip()
+        pygame.display.update()
 
         # Limit the frame rate
         clock.tick(60)
